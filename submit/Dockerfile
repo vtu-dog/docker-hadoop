@@ -1,9 +1,9 @@
 FROM hadoop-base
 
-COPY WordCount.jar /opt/hadoop/applications/WordCount.jar
+COPY project/MapReduce/build/libs/MapReduce.jar /opt/hadoop/applications/MapReduce.jar
 
-ENV JAR_FILEPATH="/opt/hadoop/applications/WordCount.jar"
-ENV CLASS_TO_RUN="WordCount"
+ENV JAR_FILEPATH="/opt/hadoop/applications/MapReduce.jar"
+ENV CLASS_TO_RUN="MapReduce"
 ENV PARAMS="/input /output"
 
 ADD run.sh /run.sh

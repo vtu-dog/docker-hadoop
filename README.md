@@ -1,64 +1,65 @@
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/big-data-europe/Lobby)
+# docker-hadoop
 
-# Changes
+Apache Hadoop in Docker made easy
 
-Version 2.0.0 introduces uses wait_for_it script for the cluster startup
+- [Overview](#overview)
+- [Installation](#installation)
+- [Running the project](#running-the-project)
+- [Additional info](#additional-info)
 
-# Hadoop Docker
+## Overview
 
-## Supported Hadoop Versions
-See repository branches for supported Hadoop versions
+So you probably wanted to dip your toes into Hadoop but got discouraged by its complexity.\
+Yeah, me too.
 
-## Quick Start
+I wanted to run Hadoop in Docker to avoid installing it locally, since a single stray command can send you on a very long journey to fix the installation. Alas, I didn't find a single GitHub repository that is up-to-date and builds on the ARM architecture, so I decided to create my own.
 
-To deploy an example HDFS cluster, run:
+## Installation
+
+You'll need to [install Docker](https://www.docker.com/get-started), obviously.\
+Due to some problems with name resolution, you'll also need to add the following line to your `/etc/hosts`:
 ```
-  docker-compose up
-```
-
-Run example wordcount job:
-```
-  make wordcount
-```
-
-Or deploy in swarm:
-```
-docker stack deploy -c docker-compose-v3.yml hadoop
+127.0.0.1 datanode datanode1 datanode2 datanode3
 ```
 
-`docker-compose` creates a docker network that can be found by running `docker network list`, e.g. `docker-hadoop_default`.
+You're all set!
 
-Run `docker network inspect` on the network (e.g. `docker-hadoop_default`) to find the IP the Hadoop interfaces are published on. Access these interfaces with the following URLs:
+## Running the project
 
-* Namenode: http://<dockerhadoop_IP_address>:9870/dfshealth.html#tab-overview
-* History server: http://<dockerhadoop_IP_address>:8188/applicationhistory
-* Resource manager: http://<dockerhadoop_IP_address>:8088/
+Once you're done with the setup, clone the repository and decide whether you want to run a cluster with 1 or 3 datanodes (`make 1dn` and `make 3dn`, respectively).
 
-All other Hadoop communication ports are not exposed and only accessible from inside the Docker network using service name and port, eg. `http://namenode:9000/`.
+Here's a basic `docker-hadoop` workflow:
+1. move your input files to the `input` folder
+2. submit your `.jar` to the cluster by running `make submit` in the project's root directory
+3. open `localhost:80` and stare in awe at the program output
+4. prepare for the next submission by running `make clean`
+5. create several GitHub account to bless the project with multiple **☆ Stars** (optional, but recommended)
 
+To make working with the project a little more enjoyable, I created a simple Java project template using Gradle in the `submit` directory. Write your own code, package it by running `gradle jar` in the `submit/project/` folder and repeat the basic workflow - your shiny new `.jar` will become the new target automatically.
 
-## Configure Environment Variables
+Oh, and you can find a prebuilt WordCount binary in `submit/project/MapReduce/build/libs/`, along with a full implementation in `submit/project/MapReduce/src/main/java/mapreduce/`.
 
-The configuration parameters can be specified in the hadoop.env file or as environmental variables for specific services (e.g. namenode, datanode etc.):
-```
-  CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-```
+Enjoy!
 
-CORE_CONF corresponds to core-site.xml. fs_defaultFS=hdfs://namenode:8020 will be transformed into:
-```
-  <property><name>fs.defaultFS</name><value>hdfs://namenode:8020</value></property>
-```
-To define dash inside a configuration parameter, use triple underscore, such as YARN_CONF_yarn_log___aggregation___enable=true (yarn-site.xml):
-```
-  <property><name>yarn.log-aggregation-enable</name><value>true</value></property>
-```
+## FAQ
 
-The available configurations are:
-* /etc/hadoop/core-site.xml CORE_CONF
-* /etc/hadoop/hdfs-site.xml HDFS_CONF
-* /etc/hadoop/yarn-site.xml YARN_CONF
-* /etc/hadoop/httpfs-site.xml HTTPFS_CONF
-* /etc/hadoop/kms-site.xml KMS_CONF
-* /etc/hadoop/mapred-site.xml  MAPRED_CONF
+### \# I can't preview / download / upload files in the web GUI!
 
-If you need to extend some other configuration file, refer to base/entrypoint.sh bash script.
+Edit your `/etc/hosts` as described above.
+
+### \# I ran `make submit` and it crashed with `Output directory hdfs://namenode:9000/output already exists`!
+
+Run `make clean`.
+
+### \# Some inexplicable demonic force possessed my installation!
+
+Ah, a classic. That happens sometimes. Try running `make down` (which will delete the entire Compose container, along with HDFS!) and reinstall with either `make 1dn` or `make 3dn`.
+
+If that didn't work... How about `make nuke`? Beware - it will literally nuke all your Docker images, containers and volumes. Handle with EXTREME caution!
+
+### \# Why aren't you using `image: {name}:{tag}` in `docker-compose.yml`?
+
+It's a temporary workaround for `aarch64` machines; refer to [this issue](https://github.com/docker/compose/issues/8804) for more info.
+
+## Additional info
+The project was tested using Docker Desktop 4.2.0 (70708) on macOS 12.0.1 Monterey (arm64).

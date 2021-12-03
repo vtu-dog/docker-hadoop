@@ -1,1 +1,2 @@
-data/
+# MacOS-specific
+.DS_Store

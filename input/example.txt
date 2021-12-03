@@ -1,0 +1,3 @@
+just a test file for mapreduce
+wordcount will output 2 for the letter a
+cheers
