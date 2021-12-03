@@ -1,5 +1,4 @@
-ARG HADOOP_BASE_VERSION=2.0.0-hadoop3.3.1-java11
-FROM hadoop-base:$HADOOP_BASE_VERSION
+FROM hadoop-base
 
 COPY WordCount.jar /opt/hadoop/applications/WordCount.jar
 

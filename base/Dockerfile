@@ -1,4 +1,4 @@
-FROM debian:10
+FROM debian
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   openjdk-11-jdk \
@@ -15,8 +15,6 @@ RUN curl -O https://dist.apache.org/repos/dist/release/hadoop/common/KEYS
 RUN gpg --import KEYS
 
 ENV HADOOP_VERSION=3.3.1
-# base URL for downloads: the name of the tar file depends
-# on the target platform (amd64/x86_64 vs. arm64/aarch64)
 ENV HADOOP_BASE_URL=https://www.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION
 
 RUN set -x \
@@ -37,8 +35,6 @@ RUN mkdir /opt/hadoop-$HADOOP_VERSION/logs
 RUN mkdir /hadoop-data
 
 ENV JAVA_HOME=/usr/lib/jvm/default-java
-# create the symlink "/usr/lib/jvm/default-java" in case
-# it is not already there (cf. package "default-jre-headless")
 RUN if ! test -d $JAVA_HOME; then \
   ln -sf $(readlink -f $(dirname $(readlink -f $(which java)))/..) $JAVA_HOME; \
   fi
