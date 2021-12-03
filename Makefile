@@ -28,5 +28,5 @@ clean:
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /input
 
 nuke: down
+	docker system prune -af
 	docker volume rm $(docker volume ls -q)
-	docker system prune -a
