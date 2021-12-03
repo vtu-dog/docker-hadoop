@@ -5,6 +5,7 @@ Apache Hadoop in Docker made easy
 - [Overview](#overview)
 - [Installation](#installation)
 - [Running the project](#running-the-project)
+- [FAQ](#faq)
 - [Additional info](#additional-info)
 
 ## Overview
