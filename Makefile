@@ -29,8 +29,6 @@ submit:
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -copyFromLocal -f /input/ /
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-submit
 
-pack-submit: pack submit
-
 clean:
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /output
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /input
