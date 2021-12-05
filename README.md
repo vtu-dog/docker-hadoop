@@ -38,7 +38,9 @@ Here's a basic `docker-hadoop` workflow:
 
 To make working with the project a little more enjoyable, I created a simple Java project template using Gradle in the `submit` directory. Write your own code, package it by running `gradle jar` in the `submit/project/` folder and repeat the basic workflow - your shiny new `.jar` will become the new target automatically.
 
-Oh, and you can find a prebuilt WordCount binary in `submit/project/MapReduce/build/libs/`, along with a full implementation in `submit/project/MapReduce/src/main/java/mapreduce/`.
+If you don't want to install Java or Gradle locally, you can either run `make pack` to create a `.jar` from your code in `submit/project/`, or `make pack-submit` to run `make pack` and `make submit` one after the other.
+
+The project includes a basic map-reduce WordCount implementation. You can run it via `make pack-submit` to test the waters before altering the code.
 
 Enjoy!
 
