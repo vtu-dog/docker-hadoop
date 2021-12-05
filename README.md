@@ -31,9 +31,9 @@ Once you're done with the setup, clone the repository and decide whether you wan
 
 Here's a basic `docker-hadoop` workflow:
 1. move your input files to the `input` folder
-2. move your `MapReduce.jar` to `submit/project/MapReduce/build/libs/` or run `make pack` to build your code from `submit/project/MapReduce/src/main/java/mapreduce/` (note that the main `.jar` class must be named `MapReduce`!)
-3. submit your `.jar` to the cluster by running `make submit` in the project's root directory
-4. open `localhost:80` and stare in awe at the program output
+2. rename your `.jar` to `MapReduce.jar` and move it to `submit/project/MapReduce/build/libs/` or run `make pack` to build the code from `submit/project/MapReduce/src/main/java/mapreduce/`
+3. submit your `.jar` to the cluster by running `make -e CLASS=your_class_name submit` in the project's root directory; remember to replace `your_class_name` with the target class name that you'd like to run (if you omit `-e CLASS=...`, the default is `-e CLASS=MapReduce`)
+4. open `localhost` (or `localhost:80`) in your browser and stare in awe at the program output
 5. prepare for the next submission by running `make clean`
 6. create several GitHub account to bless the project with multiple **☆ Stars** (optional, but recommended)
 
@@ -49,23 +49,31 @@ Enjoy!
 
 ## FAQ
 
-### \# I can't preview / download / upload files in the web GUI!
+### I can't preview / download / upload files in the web GUI!
 
 Edit your `/etc/hosts` as described above.
 
-### \# I ran `make submit` and it crashed with `Output directory hdfs://namenode:9000/output already exists`!
+### I ran `make submit` and it crashed with `Exception in thread "main" java.lang.ClassNotFoundException: some_class_name`!
+
+Specify your target class explicitly by passing `-e CLASS=some_other_class_name` to your `make` command.
+
+### I ran `make submit` and it crashed with `Output directory hdfs://namenode:9000/output already exists`!
 
 Run `make clean`.
 
-### \# Some inexplicable demonic force possessed my installation!
+### Some inexplicable demonic force possessed my installation!
 
 Ah, a classic. That happens sometimes. Try running `make down` (which will delete the entire Compose container, along with HDFS!) and reinstall with either `make 1dn` or `make 3dn`.
 
 If that didn't work... How about `make nuke`? Beware - it will literally nuke all your Docker images, containers and volumes. Handle with EXTREME caution!
 
-### \# Why aren't you using `image: {name}:{tag}` in `docker-compose.yml`?
+### Why aren't you using `image: {name}:{tag}` in `docker-compose.yml`?
 
 It's a temporary workaround for `aarch64` machines; refer to [this issue](https://github.com/docker/compose/issues/8804) for more info.
+
+### I didn't find a solution to my problem in the FAQ :(
+
+Open a new GitHub issue and we'll try to work something out.
 
 ## Additional info
 The project was tested using Docker Desktop 4.2.0 (70708) on macOS 12.0.1 Monterey (arm64).
