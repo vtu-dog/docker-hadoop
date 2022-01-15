@@ -37,6 +37,10 @@ Here's a basic `docker-hadoop` workflow:
 5. prepare for the next submission by running `make clean`
 6. create several GitHub account to bless the project with multiple **☆ Stars** (optional, but recommended)
 
+If you'd like to use the streaming API instead, I got you covered. Create your cluster, put your input files in the `input` directory and run `make -e MAPPER="your mapper here" -e REDUCER="your reducer here" stream`.
+
+Want an example command for the streaming API? Sure, try running `make -e MAPPER="tr -s '[[:punct:][:space:]]' '\n'" -e REDUCER="/usr/bin/uniq -c" stream` for WordCount.
+
 To make working with the project a little more enjoyable, I created a simple Java project template using Gradle in the `submit` directory. Write your own code, package it by running `gradle jar` in the `submit/project/` folder and repeat the basic workflow - your shiny new `.jar` will become the new target automatically.
 
 If you don't want to install Java or Gradle locally, you can either run `make pack` to create a `.jar` from your code in `submit/project/`, or `make pack submit` to run `make pack` and `make submit` one after the other.

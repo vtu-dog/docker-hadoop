@@ -3,7 +3,7 @@ ENV_FILE = hadoop.env
 CLASS = MapReduce
 PARAMS = /input /output
 
-.PHONY: submit clean
+.PHONY: submit stream clean
 
 build:
 	docker build -t hadoop-base ./base
@@ -30,6 +30,19 @@ submit:
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -mkdir -p /input/
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -copyFromLocal -f /input/ /
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} -e CLASS_TO_RUN=${CLASS} -e PARAMS="${PARAMS}" hadoop-submit
+
+stream:
+ifndef MAPPER
+	$(error MAPPER is undefined)
+endif
+ifndef REDUCER
+	$(error REDUCER is undefined)
+endif
+	docker build -t hadoop-stream ./stream
+	docker build -t hadoop-tmp .
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -mkdir -p /input/
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -copyFromLocal -f /input/ /
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} -e MAPPER="${MAPPER}" -e REDUCER="${REDUCER}" hadoop-stream
 
 clean:
 	docker rm -fv hadoop-tmp
