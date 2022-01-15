@@ -1,7 +1,7 @@
 DOCKER_NETWORK = docker-hadoop_default
 ENV_FILE = hadoop.env
 CLASS = MapReduce
-PARAMS = "/input /output"
+PARAMS = /input /output
 
 .PHONY: submit clean
 
