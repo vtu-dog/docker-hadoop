@@ -4,7 +4,7 @@ COPY project/MapReduce/build/libs/MapReduce.jar /opt/hadoop/applications/MapRedu
 
 ENV JAR_FILEPATH="/opt/hadoop/applications/MapReduce.jar"
 ARG CLASS_TO_RUN
-ENV PARAMS="/input /output"
+ARG PARAMS
 
 ADD run.sh /run.sh
 RUN chmod a+x /run.sh

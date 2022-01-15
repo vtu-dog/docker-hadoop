@@ -1,6 +1,7 @@
 DOCKER_NETWORK = docker-hadoop_default
 ENV_FILE = hadoop.env
 CLASS = MapReduce
+PARAMS = "/input /output"
 
 .PHONY: submit clean
 
@@ -28,7 +29,7 @@ submit:
 	docker build -t hadoop-tmp .
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -mkdir -p /input/
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -copyFromLocal -f /input/ /
-	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} -e CLASS_TO_RUN=${CLASS} hadoop-submit
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} -e CLASS_TO_RUN=${CLASS} -e PARAMS='${PARAMS}' hadoop-submit
 
 clean:
 	docker rm -fv hadoop-tmp
