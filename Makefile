@@ -33,8 +33,8 @@ submit:
 
 clean:
 	docker rm -fv hadoop-tmp
-	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /output
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /input
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /output
 
 nuke: down
 	docker system prune -af
