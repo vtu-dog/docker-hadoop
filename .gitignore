@@ -1,2 +1,5 @@
+# VSCode project files
+.vscode/
+
 # MacOS-specific
-.DS_Store
+**/.DS_Store

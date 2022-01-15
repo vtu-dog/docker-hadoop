@@ -2,6 +2,7 @@ FROM debian
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
   openjdk-11-jdk \
+  python3 \
   net-tools \
   curl \
   netcat \

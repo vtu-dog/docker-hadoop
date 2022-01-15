@@ -3,7 +3,7 @@ ENV_FILE = hadoop.env
 CLASS = MapReduce
 PARAMS = /input /output
 
-.PHONY: submit stream clean
+.PHONY: submit stream stream-python clean
 
 build:
 	docker build -t hadoop-base ./base
@@ -44,10 +44,17 @@ endif
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -copyFromLocal -f /input/ /
 	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} -e MAPPER="${MAPPER}" -e REDUCER="${REDUCER}" hadoop-stream
 
+stream-python:
+	docker build -t hadoop-stream ./stream
+	docker build -t hadoop-tmp .
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -mkdir -p /input/
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -copyFromLocal -f /input/ /
+	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} -e USE_FILE=true hadoop-stream
+
 clean:
-	docker rm -fv hadoop-tmp
-	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /input
-	docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /output
+	-docker rm -fv hadoop-tmp
+	-docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /input
+	-docker run --rm --network ${DOCKER_NETWORK} --env-file ${ENV_FILE} hadoop-tmp hdfs dfs -rm -r /output
 
 nuke: down
 	docker system prune -af
