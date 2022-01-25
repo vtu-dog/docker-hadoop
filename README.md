@@ -32,7 +32,7 @@ Once you're done with the setup, clone the repository and decide whether you wan
 Here's a basic `docker-hadoop` workflow:
 1. move your input files to the `input` folder
 2. rename your `.jar` to `MapReduce.jar` and move it to `submit/project/MapReduce/build/libs/` or run `make pack` to build the code from `submit/project/MapReduce/src/main/java/mapreduce/`
-3. submit your `.jar` to the cluster by running `make -e CLASS=your_class_name -e PARAMS="your parameters here" submit` in the project's root directory; remember to replace `your_class_name` with the target class name that you'd like to run (if you omit `-e CLASS=...`, the default is `-e CLASS=MapReduce`; if you omit `-e PARAMS=...`, the default is `-e PARAMS="/input /output"`)
+3. submit your `.jar` to the cluster by running `make -e CLASS=your_class_name -e PARAMS="your parameters here" submit` in the project's root directory; remember to replace `your_class_name` with the target class name that you'd like to run (if you omit `-e CLASS=...`, the default is `-e CLASS="mapreduce.MapReduce"`; if you omit `-e PARAMS=...`, the default is `-e PARAMS="/input /output"`)
 4. open `localhost` (or `localhost:80`) in your browser and stare in awe at the program output
 5. prepare for the next submission by running `make clean`
 6. create several GitHub account to bless the project with multiple **☆ Stars** (optional, but recommended)

@@ -1,6 +1,6 @@
 DOCKER_NETWORK = docker-hadoop_default
 ENV_FILE = hadoop.env
-CLASS = MapReduce
+CLASS = mapreduce.MapReduce
 PARAMS = /input /output
 
 .PHONY: submit stream stream-python clean
