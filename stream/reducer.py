@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from operator import itemgetter
 import sys
 
 current_word = None
