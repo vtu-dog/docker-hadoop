@@ -20,12 +20,12 @@ function configure() {
     local var
     local value
     
-    echo "Configuring $module"
+    # echo "Configuring $module"
     for c in `printenv | perl -sne 'print "$1 " if m/^${envPrefix}_(.+?)=.*/' -- -envPrefix=$envPrefix`; do
         name=`echo ${c} | perl -pe 's/___/-/g; s/__/@/g; s/_/./g; s/@/_/g;'`
         var="${envPrefix}_${c}"
         value=${!var}
-        echo " - Setting $name=$value"
+        # echo " - Setting $name=$value"
         addProperty $path $name "$value"
     done
 }
@@ -38,7 +38,7 @@ configure /etc/hadoop/kms-site.xml kms KMS_CONF
 configure /etc/hadoop/mapred-site.xml mapred MAPRED_CONF
 
 if [ "$MULTIHOMED_NETWORK" = "1" ]; then
-    echo "Configuring for multihomed network"
+    # echo "Configuring for multihomed network"
 
     # HDFS
     addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.rpc-bind-host 0.0.0.0
